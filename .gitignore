@@ -1,0 +1,4 @@
+build/
+src/CMakeLists.txt
+src/jconfig.h.in
+src/jconfig.h
