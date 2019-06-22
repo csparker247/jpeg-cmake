@@ -48,22 +48,23 @@ libraries can be controlled with the `BUILD_*_LIBS` CMake flags:
 cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON ..
 ```
 
-### Extra Components
+### Utilities
 The `libjpeg` utility programs are built by default. To disable compilation of
 these tools, set the `BUILD_EXECUTABLES` flag:
 ```Shell
 cmake -DBUILD_EXECUTABLES=OFF ..
 ```
 
-__(COMING SOON)__ The `libjpeg` tests are built by default. To disable, set the
-`BUILD_TESTS` flag:
-```Shell
-cmake -DBUILD_TESTS=OFF ..
-```
-
-By default, executables and tests are linked against the shared libraries. If
+By default, executables are linked against the shared libraries. If
 static libraries are enabled, executables can optionally be linked statically
 by using the `LINK_STATIC` flag:
 ```Shell
 cmake -DLINK_STATIC=ON ..
+```
+
+### Tests (Coming Soon)
+The `libjpeg` tests are built by default. To disable, set the
+`BUILD_TESTS` flag:
+```Shell
+cmake -DBUILD_TESTS=OFF ..
 ```
