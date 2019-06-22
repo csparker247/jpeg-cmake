@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/@libdir@
+includedir=${prefix}/@includedir@
+
+Name: libjpeg
+Description: Reads and writes JPEG files
+Version: @JPEG_LIB_VERSION@
+Libs: -L${libdir} -ljpeg
+Cflags: -I${includedir}

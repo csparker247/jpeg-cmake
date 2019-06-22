@@ -1,4 +1,5 @@
 build/
-src/CMakeLists.txt
-src/jconfig.h.in
-src/jconfig.h
+libjpeg/CMakeLists.txt
+libjpeg/jconfig.h.in
+libjpeg/jconfig.h
+libjpeg/libjpeg.pc.cmakein

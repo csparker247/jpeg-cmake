@@ -1,6 +1,23 @@
 cmake_minimum_required(VERSION 3.0)
-project(libjpeg-cmake VERSION 1.0)
+project(jpeg-cmake VERSION 1.0)
 
-configure_file(CMakeLists-IJG.txt ${PROJECT_SOURCE_DIR}/src/CMakeLists.txt COPYONLY)
-configure_file(jconfig.h.in ${PROJECT_SOURCE_DIR}/src/jconfig.h.in COPYONLY)
-add_subdirectory(src)
+# Use configure_file insted of file(COPY)
+# to ensure files are updated in src directory
+configure_file(
+  resources/CMakeLists.txt
+  ${PROJECT_SOURCE_DIR}/libjpeg/CMakeLists.txt
+  COPYONLY
+)
+configure_file(
+  resources/jconfig.h.in
+  ${PROJECT_SOURCE_DIR}/libjpeg/jconfig.h.in
+  COPYONLY
+)
+configure_file(
+  resources/libjpeg.pc.cmakein
+  ${PROJECT_SOURCE_DIR}/libjpeg/libjpeg.pc.cmakein
+  COPYONLY
+)
+
+# Build libjpeg
+add_subdirectory(libjpeg)

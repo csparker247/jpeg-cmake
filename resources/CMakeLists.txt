@@ -1,6 +1,8 @@
 # CMake configuration for IJG libjpeg
+# To install, copy this file and jconfig.h.in into a libjpeg source directory
 # Adapted from LuaDist's CMakeLists
 # https://github.com/LuaDist/libjpeg/blob/master/CMakeLists.txt
+
 cmake_minimum_required(VERSION 3.0)
 
 ### Setup the project ###
@@ -82,6 +84,24 @@ if(BUILD_STATIC_LIBS)
     install(TARGETS jpeg_static)
 endif()
 
+# Configure and install pkg-config file
+if(BUILD_STATIC_LIBS OR BUILD_SHARED_LIBS)
+  include(GNUInstallDirs)
+  # Handle the pc file's weird version number
+  math(EXPR pc_vers_major "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
+  set(JPEG_LIB_VERSION "${pc_vers_major}:0:${PROJECT_VERSION_MINOR}")
+  # Get the appropriate variables
+  set(prefix ${CMAKE_INSTALL_PREFIX})
+  set(libdir ${CMAKE_INSTALL_LIBDIR})
+  set(includedir ${CMAKE_INSTALL_INCLUDEDIR})
+  # Configure and install
+  configure_file(libjpeg.pc.cmakein libjpeg.pc @ONLY)
+  install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/libjpeg.pc
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+  )
+endif()
+
 ### Build executables
 if(BUILD_EXECUTABLES)
   add_executable(cjpeg cdjpeg.c cjpeg.c rdbmp.c rdgif.c rdppm.c rdrle.c rdtarga.c rdswitch.c)
@@ -91,7 +111,7 @@ if(BUILD_EXECUTABLES)
   add_executable(wrjpgcom wrjpgcom.c)
 
   # Link appropriately
-  if(LINK_STATIC)
+  if(LINK_STATIC OR (NOT BUILD_SHARED_LIBS))
     message(STATUS "Linking executables statically")
     set(LINKED_JPEG_LIB jpeg_static)
   else()
