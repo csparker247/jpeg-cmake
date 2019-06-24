@@ -14,12 +14,14 @@ _deps
 
 ## jpeg-cmake ##
 libjpeg/CMakeLists.txt
+libjpeg/ConfigureJConfig.cmake
 libjpeg/jconfig.h.in
 libjpeg/jconfig.h
 libjpeg/libjpeg.pc.cmakein
 libjpeg/libjpeg.pc
 libjpeg/libjpeg.la.in
 libjpeg/libjpeg.la
+libjpeg/test-libjpeg.sh
 
 ## libjpeg ##
 .deps/
@@ -29,6 +31,7 @@ djpeg
 jpegtran
 rdjpgcom
 wrjpgcom
+testout*
 
 ## Autoconf ##
 # http://www.gnu.org/software/automake

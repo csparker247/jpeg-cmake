@@ -13,7 +13,6 @@ project(libjpeg VERSION ${version} LANGUAGES C)
 set(C_STANDARD 99)
 
 ### Include extra packages ###
-include(CheckIncludeFile)
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 
@@ -21,7 +20,7 @@ include(GNUInstallDirs)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_STATIC_LIBS "Build static libraries" ON)
 cmake_dependent_option(BUILD_EXECUTABLES "Build JPEG utilities" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS" OFF)
-# cmake_dependent_option(BUILD_TESTS "Build test executables" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS" OFF)
+cmake_dependent_option(BUILD_TESTS "Build test executables" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS;BUILD_EXECUTABLES" OFF)
 cmake_dependent_option(LINK_STATIC "Link all executables statically" OFF "BUILD_STATIC_LIBS;BUILD_EXECUTABLES" OFF)
 
 # Make sure we build at least one library
@@ -30,12 +29,7 @@ if(NOT(BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS))
 endif()
 
 ### Configure jconfig.h ###
-check_include_file(stddef.h HAVE_STDDEF_H)
-check_include_file(stdlib.h HAVE_STDLIB_H)
-if(WIN32 AND NOT CYGWIN)
-  set(TWO_FILE_COMMANDLINE ON)
-endif()
-configure_file(jconfig.h.in ${CMAKE_CURRENT_SOURCE_DIR}/jconfig.h)
+include(ConfigureJConfig.cmake)
 
 ### Build the object library ###
 set(PUBLIC_HDRS
@@ -141,5 +135,40 @@ if(BUILD_EXECUTABLES)
   install(
     FILES cjpeg.1 djpeg.1 jpegtran.1 rdjpgcom.1 wrjpgcom.1
     DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+  )
+endif()
+
+### Add tests
+if(BUILD_TESTS)
+  enable_testing()
+  # Copy test files
+  file(
+    COPY testorig.jpg testimg.ppm testimg.bmp testimg.jpg testprog.jpg testimgp.jpg
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+  )
+  ## Add tests
+  add_test(
+    NAME jpeg2ppm
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2ppm
+  )
+  add_test(
+    NAME jpeg2bmp
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2bmp
+  )
+  add_test(
+    NAME ppm2jpg
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh ppm2jpg
+  )
+  add_test(
+    NAME progressive2ppm
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh progressive2ppm
+  )
+  add_test(
+    NAME ppm2progressive
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh ppm2progressive
+  )
+  add_test(
+    NAME progressive2baseline
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh progressive2baseline
   )
 endif()

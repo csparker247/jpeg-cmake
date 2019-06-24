@@ -9,6 +9,11 @@ configure_file(
   COPYONLY
 )
 configure_file(
+  resources/ConfigureJConfig.cmake
+  ${PROJECT_SOURCE_DIR}/libjpeg/ConfigureJConfig.cmake
+  COPYONLY
+)
+configure_file(
   resources/jconfig.h.in
   ${PROJECT_SOURCE_DIR}/libjpeg/jconfig.h.in
   COPYONLY
@@ -23,6 +28,14 @@ configure_file(
   ${PROJECT_SOURCE_DIR}/libjpeg/libjpeg.la.in
   COPYONLY
 )
+configure_file(
+  resources/test-libjpeg.sh
+  ${PROJECT_SOURCE_DIR}/libjpeg/test-libjpeg.sh
+  COPYONLY
+)
+
+# Enable testing here AND in libjpeg CMakelists.txt
+enable_testing()
 
 # Build libjpeg
 add_subdirectory(libjpeg)
