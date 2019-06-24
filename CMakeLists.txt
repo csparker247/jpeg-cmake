@@ -18,6 +18,11 @@ configure_file(
   ${PROJECT_SOURCE_DIR}/libjpeg/libjpeg.pc.cmakein
   COPYONLY
 )
+configure_file(
+  resources/libjpeg.la.in
+  ${PROJECT_SOURCE_DIR}/libjpeg/libjpeg.la.in
+  COPYONLY
+)
 
 # Build libjpeg
 add_subdirectory(libjpeg)

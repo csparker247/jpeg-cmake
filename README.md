@@ -2,8 +2,8 @@
 Current Version: `libjpeg 9c (9.3.0)`
 
 ## Usage
-This project is meant to provide drop-in CMake support for the IJG's JPEG
-library. Simply run CMake as normal:
+This project provides drop-in CMake support for the IJG's JPEG library.
+Simply run CMake as normal:
 
 ```Shell
 mkdir build/
@@ -42,7 +42,7 @@ make
 ### Shared and Static Libraries
 `jpeg-cmake` emulates the behavior of `libjpeg` and compiles both static and
 shared libraries by default. Selective compilation of shared and static
-libraries can be controlled with the `BUILD_*_LIBS` CMake flags:
+libraries can be controlled with the `BUILD_<SHARED|STATIC>_LIBS` CMake flags:
 
 ```Shell
 cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON ..

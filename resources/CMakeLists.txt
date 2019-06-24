@@ -12,8 +12,12 @@ set(version ${CMAKE_MATCH_1})
 project(libjpeg VERSION ${version} LANGUAGES C)
 set(C_STANDARD 99)
 
-### Options ###
+### Include extra packages ###
+include(CheckIncludeFile)
 include(CMakeDependentOption)
+include(GNUInstallDirs)
+
+### Options ###
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_STATIC_LIBS "Build static libraries" ON)
 cmake_dependent_option(BUILD_EXECUTABLES "Build JPEG utilities" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS" OFF)
@@ -26,7 +30,6 @@ if(NOT(BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS))
 endif()
 
 ### Configure jconfig.h ###
-include(CheckIncludeFile)
 check_include_file(stddef.h HAVE_STDDEF_H)
 check_include_file(stdlib.h HAVE_STDLIB_H)
 if(WIN32 AND NOT CYGWIN)
@@ -84,21 +87,33 @@ if(BUILD_STATIC_LIBS)
     install(TARGETS jpeg_static)
 endif()
 
-# Configure and install pkg-config file
+# Configure and install pkg-config and libtool files
 if(BUILD_STATIC_LIBS OR BUILD_SHARED_LIBS)
-  include(GNUInstallDirs)
-  # Handle the pc file's weird version number
-  math(EXPR pc_vers_major "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
-  set(JPEG_LIB_VERSION "${pc_vers_major}:0:${PROJECT_VERSION_MINOR}")
-  # Get the appropriate variables
-  set(prefix ${CMAKE_INSTALL_PREFIX})
-  set(libdir ${CMAKE_INSTALL_LIBDIR})
-  set(includedir ${CMAKE_INSTALL_INCLUDEDIR})
+  # Compute the pc file's weird version number
+  math(EXPR JPEG_CONF_VER_MAJOR "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
+  set(JPEG_LIB_VERSION "${JPEG_CONF_VER_MAJOR}:0:${PROJECT_VERSION_MINOR}")
+
+  # Create library file names for libtool file
+  if(BUILD_SHARED_LIBS)
+    set(DYN_LIB_FILE_VERSIONED ${CMAKE_SHARED_LIBRARY_PREFIX}jpeg.${PROJECT_VERSION_MAJOR}${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(DYN_LIB_FILES "${DYN_LIB_FILE_VERSIONED} ${CMAKE_SHARED_LIBRARY_PREFIX}jpeg${CMAKE_SHARED_LIBRARY_SUFFIX}")
+  endif()
+
+  if(BUILD_STATIC_LIBS)
+    set(STATIC_LIB_FILE "${CMAKE_STATIC_LIBRARY_PREFIX}jpeg${CMAKE_STATIC_LIBRARY_SUFFIX}")
+  endif()
+
   # Configure and install
   configure_file(libjpeg.pc.cmakein libjpeg.pc @ONLY)
   install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/libjpeg.pc
     DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+  )
+
+  configure_file(libjpeg.la.in libjpeg.la @ONLY)
+  install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/libjpeg.la
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/
   )
 endif()
 
@@ -123,4 +138,8 @@ if(BUILD_EXECUTABLES)
   target_link_libraries(jpegtran ${LINKED_JPEG_LIB})
 
   install(TARGETS cjpeg djpeg jpegtran rdjpgcom wrjpgcom)
+  install(
+    FILES cjpeg.1 djpeg.1 jpegtran.1 rdjpgcom.1 wrjpgcom.1
+    DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+  )
 endif()
