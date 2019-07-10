@@ -66,19 +66,27 @@ if(BUILD_SHARED_LIBS)
       CLEAN_DIRECT_OUTPUT ON
       PUBLIC_HEADER "${PUBLIC_HDRS}"
   )
-  install(TARGETS jpeg)
+  install(TARGETS jpeg
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
 endif()
 
 if(BUILD_STATIC_LIBS)
   add_library(jpeg_static STATIC $<TARGET_OBJECTS:jpeg_objs>)
-    set_target_properties(jpeg_static
-      PROPERTIES
-        OUTPUT_NAME jpeg
-        VERSION ${PROJECT_VERSION_MAJOR}
-        CLEAN_DIRECT_OUTPUT ON
-        PUBLIC_HEADER "${PUBLIC_HDRS}"
-    )
-    install(TARGETS jpeg_static)
+  set_target_properties(jpeg_static
+    PROPERTIES
+      OUTPUT_NAME jpeg
+      VERSION ${PROJECT_VERSION_MAJOR}
+      CLEAN_DIRECT_OUTPUT ON
+      PUBLIC_HEADER "${PUBLIC_HDRS}"
+  )
+  install(TARGETS jpeg_static
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
 endif()
 
 # Configure and install pkg-config and libtool files
@@ -131,7 +139,9 @@ if(BUILD_EXECUTABLES)
   target_link_libraries(djpeg ${LINKED_JPEG_LIB})
   target_link_libraries(jpegtran ${LINKED_JPEG_LIB})
 
-  install(TARGETS cjpeg djpeg jpegtran rdjpgcom wrjpgcom)
+  install(TARGETS cjpeg djpeg jpegtran rdjpgcom wrjpgcom
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
   install(
     FILES cjpeg.1 djpeg.1 jpegtran.1 rdjpgcom.1 wrjpgcom.1
     DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
