@@ -91,9 +91,8 @@ endif()
 
 # Configure and install pkg-config and libtool files
 if(BUILD_STATIC_LIBS OR BUILD_SHARED_LIBS)
-  # Compute the pc file's weird version number
-  math(EXPR JPEG_CONF_VER_MAJOR "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
-  set(JPEG_LIB_VERSION "${JPEG_CONF_VER_MAJOR}:0:${PROJECT_VERSION_MINOR}")
+  set(JPEG_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+  set(JPEG_LIB_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 
   # Create library file names for libtool file
   if(BUILD_SHARED_LIBS)
