@@ -91,6 +91,8 @@ endif()
 
 # Configure and install pkg-config and libtool files
 if(BUILD_STATIC_LIBS OR BUILD_SHARED_LIBS)
+  # Compute the la file's weird version number
+  math(EXPR JPEG_CONF_VER_MAJOR "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
   set(JPEG_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
   set(JPEG_LIB_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 

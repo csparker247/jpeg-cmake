@@ -1,5 +1,5 @@
 # IJG's libjpeg (with CMake)
-Current Version: `libjpeg 9c (9.3.0)`
+Current Version: `libjpeg 9d (9.4.0)`
 
 ## Usage
 This project provides drop-in CMake support for the IJG's JPEG library.
@@ -15,8 +15,8 @@ make
 Alternatively, the important CMake files can be copied to any `libjpeg`
 source directory:
 ```Shell
-cp resources/* ~/jpeg-9c/
-cd ~/jpeg-9c/
+cp resources/* ~/jpeg-9d/
+cd ~/jpeg-9d/
 mkdir build/
 cd build/
 cmake ..
@@ -30,7 +30,7 @@ cd libjpeg/
 rm -rf *
 
 # Copy the source files for libjpeg into the libjpeg subdirectory
-cp -a ~/jpeg-9c/ .
+cp -a ~/jpeg-9d/ .
 
 # Rerun the CMake build process
 cd ../build/
@@ -77,8 +77,9 @@ cmake -DBUILD_TESTS=OFF ..
 ```
 
 ### Customize `jconfig.h`
-`libjpeg` provides extensive build customization through modification of `jconfig.h`. To ease this process, `jpeg-cmake` provides many of these
-customization options as CMake flags. For example:
+`libjpeg` provides extensive build customization through modification of `jconfig.h`.
+To ease this process, `jpeg-cmake` provides many of these customization options
+as CMake flags. For example:
 
 ```Shell
 cmake -DGIF_SUPPORTED=OFF -DPROGRESS_REPORT=ON ..
