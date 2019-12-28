@@ -152,13 +152,17 @@ if(BUILD_TESTS)
   enable_testing()
   # Copy test files
   file(
-    COPY testorig.jpg testimg.ppm testimg.bmp testimg.jpg testprog.jpg testimgp.jpg
+    COPY testorig.jpg testimg.ppm testimg.gif testimg.bmp testimg.jpg testprog.jpg testimgp.jpg
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
   )
   ## Add tests
   add_test(
     NAME jpeg2ppm
     COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2ppm
+  )
+  add_test(
+    NAME jpeg2gif
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2gif
   )
   add_test(
     NAME jpeg2bmp
