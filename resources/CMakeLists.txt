@@ -91,9 +91,10 @@ endif()
 
 # Configure and install pkg-config and libtool files
 if(BUILD_STATIC_LIBS OR BUILD_SHARED_LIBS)
-  # Compute the pc file's weird version number
+  # Compute the la file's weird version number
   math(EXPR JPEG_CONF_VER_MAJOR "${PROJECT_VERSION_MAJOR} + ${PROJECT_VERSION_MINOR}")
-  set(JPEG_LIB_VERSION "${JPEG_CONF_VER_MAJOR}:0:${PROJECT_VERSION_MINOR}")
+  set(JPEG_LIB_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+  set(JPEG_LIB_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 
   # Create library file names for libtool file
   if(BUILD_SHARED_LIBS)
@@ -153,13 +154,17 @@ if(BUILD_TESTS)
   enable_testing()
   # Copy test files
   file(
-    COPY testorig.jpg testimg.ppm testimg.bmp testimg.jpg testprog.jpg testimgp.jpg
+    COPY testorig.jpg testimg.ppm testimg.gif testimg.bmp testimg.jpg testprog.jpg testimgp.jpg
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
   )
   ## Add tests
   add_test(
     NAME jpeg2ppm
     COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2ppm
+  )
+  add_test(
+    NAME jpeg2gif
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-libjpeg.sh jpeg2gif
   )
   add_test(
     NAME jpeg2bmp

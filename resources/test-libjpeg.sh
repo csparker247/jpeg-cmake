@@ -4,6 +4,10 @@
 if [[ $1 == "jpeg2ppm" ]]; then
 ./djpeg -dct int -ppm -outfile testout.ppm testorig.jpg && cmp testimg.ppm testout.ppm
 
+# jpeg2gif
+elif [[ $1 == "jpeg2gif" ]]; then
+./djpeg -dct int -gif -outfile testout.gif testorig.jpg && cmp testimg.gif testout.gif
+
 # jpeg2bmp
 elif [[ $1 == "jpeg2bmp" ]]; then
 ./djpeg -dct int -bmp -colors 256 -outfile testout.bmp testorig.jpg && cmp testimg.bmp testout.bmp
