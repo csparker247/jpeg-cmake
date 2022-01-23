@@ -84,6 +84,13 @@ set(PPM_SUPPORTED true CACHE BOOL "Enable PBMPLUS PPM/PGM image file format supp
 set(RLE_SUPPORTED false CACHE BOOL "Enable Utah RLE image file format support")
 set(TARGA_SUPPORTED	true CACHE BOOL "Enable Targa image file format support")
 
+
+## This defines the default output format for djpeg. Must be one of the
+## FMT_* enums found in djpeg.c or djpegalt.c
+set(DEFAULT_FMT "" CACHE STRING "Overwrite the default file format in djpeg")
+set(FMT_OPTS "FMT_BMP;FMT_GIF;FMT_GIF0;FMT_OS2;FMT_PPM;FMT_RLE;FMT_TARGA;FMT_TIFF")
+set_property(CACHE DEFAULT_FMT PROPERTY STRINGS ${FMT_OPTS})
+
 ## Define this if you want to name both input and output files on the command
 ## line, rather than using stdout and optionally stdin.  You MUST do this if
 ## your system can't cope with binary I/O to stdin/stdout.  See comments at
@@ -107,6 +114,9 @@ set(DONT_USE_B_MODE false CACHE BOOL "Disable B-mode with fopen")
 
 ## Define this if you want percent-done progress reports from cjpeg/djpeg.
 set(PROGRESS_REPORT false CACHE BOOL "Enable percent-done progress reports from cjpeg/djpeg")
+
+# Define this if you don't want overwrite confirmation in cjpeg/djpeg
+set(NO_OVERWRITE_CHECK false CACHE BOOL "Disable overwrite confirmation in cjpeg/djpeg")
 
 mark_as_advanced(FORCE
   HAVE_PROTOTYPES
