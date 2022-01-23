@@ -22,6 +22,7 @@ option(BUILD_STATIC_LIBS "Build static libraries" ON)
 cmake_dependent_option(BUILD_EXECUTABLES "Build JPEG utilities" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS" OFF)
 cmake_dependent_option(BUILD_TESTS "Build test executables" ON "BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS;BUILD_EXECUTABLES" OFF)
 cmake_dependent_option(LINK_STATIC "Link all executables statically" OFF "BUILD_STATIC_LIBS;BUILD_EXECUTABLES" OFF)
+cmake_dependent_option(BUILD_ALT_UI "Build alternate interface for command line utilities" OFF "BUILD_EXECUTABLES" OFF)
 
 # Make sure we build at least one library
 if(NOT(BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS))
@@ -122,8 +123,16 @@ endif()
 
 ### Build executables
 if(BUILD_EXECUTABLES)
-  add_executable(cjpeg cdjpeg.c cjpeg.c rdbmp.c rdgif.c rdppm.c rdrle.c rdtarga.c rdswitch.c)
-  add_executable(djpeg cdjpeg.c djpeg.c wrbmp.c wrgif.c wrppm.c wrrle.c wrtarga.c rdcolmap.c)
+  # Build alternate UI
+  if(BUILD_ALT_UI)
+    set(CJPEG_UI cjpegalt.c)
+    set(DJPEG_UI djpegalt.c)
+  else()
+    set(CJPEG_UI cjpeg.c)
+    set(DJPEG_UI djpeg.c)
+  endif()
+  add_executable(cjpeg cdjpeg.c ${CJPEG_UI} rdbmp.c rdgif.c rdppm.c rdrle.c rdtarga.c rdswitch.c)
+  add_executable(djpeg cdjpeg.c ${DJPEG_UI} wrbmp.c wrgif.c wrppm.c wrrle.c wrtarga.c rdcolmap.c)
   add_executable(jpegtran jpegtran.c cdjpeg.c rdswitch.c transupp.c)
   add_executable(rdjpgcom rdjpgcom.c)
   add_executable(wrjpgcom wrjpgcom.c)
