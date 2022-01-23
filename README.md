@@ -62,6 +62,23 @@ by using the `LINK_STATIC` flag:
 cmake -DLINK_STATIC=ON ..
 ```
 
+#### Default output format
+The default output format for djpeg can be specified with the `DEFAULT_FMT`
+flag. To compile correctly, the flag must be set to one of the enum options
+listed in `djpeg.c`:
+* FMT_BMP
+*	FMT_GIF
+*	FMT_GIF0
+*	FMT_OS2
+*	FMT_PPM
+*	FMT_RLE
+*	FMT_TARGA
+*	FMT_TIFF
+
+```Shell
+cmake -DDEFAULT_FMT=FMT_BMP ..
+```
+
 #### Alternate UI
 jpeg-9e provides an alternate command line interface for cjpeg and djpeg. This
 interface can be enabled with the `BUILD_ALT_UI` flag:
