@@ -1,5 +1,5 @@
 # IJG's libjpeg (with CMake)
-Current Version: `libjpeg 9d (9.4.0)`
+Current Version: `libjpeg 9e (9.5.0)`
 
 ## Usage
 This project provides drop-in CMake support for the IJG's JPEG library.
@@ -15,8 +15,8 @@ make
 Alternatively, the important CMake files can be copied to any `libjpeg`
 source directory:
 ```Shell
-cp resources/* ~/jpeg-9d/
-cd ~/jpeg-9d/
+cp resources/* ~/jpeg-9e/
+cd ~/jpeg-9e/
 mkdir build/
 cd build/
 cmake ..
@@ -30,7 +30,7 @@ cd libjpeg/
 rm -rf *
 
 # Copy the source files for libjpeg into the libjpeg subdirectory
-cp -a ~/jpeg-9d/ .
+cp -a ~/jpeg-9e/ .
 
 # Rerun the CMake build process
 cd ../build/
@@ -60,6 +60,13 @@ static libraries are enabled, executables can optionally be linked statically
 by using the `LINK_STATIC` flag:
 ```Shell
 cmake -DLINK_STATIC=ON ..
+```
+
+#### Alternate UI
+jpeg-9e provides an alternate command line interface for cjpeg and djpeg. This
+interface can be enabled with the `BUILD_ALT_UI` flag:
+```Shell
+cmake -DBUILD_ALT_UI=ON ..
 ```
 
 ### Tests

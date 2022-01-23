@@ -137,6 +137,12 @@ typedef unsigned char boolean;
 #cmakedefine RLE_SUPPORTED		/* Utah RLE image file format */
 #cmakedefine TARGA_SUPPORTED		/* Targa image file format */
 
+/*
+ * This defines the default output format for djpeg. Must be one of the FMT_*
+ * enums found in djpeg.c or djpegalt.c
+ */
+#cmakedefine DEFAULT_FMT "@DEFAULT_FMT@"
+
 /* Define this if you want to name both input and output files on the command
  * line, rather than using stdout and optionally stdin.  You MUST do this if
  * your system can't cope with binary I/O to stdin/stdout.  See comments at
@@ -161,5 +167,7 @@ typedef unsigned char boolean;
  */
 #cmakedefine PROGRESS_REPORT
 
+/* Define this if you *don't* want overwrite confirmation */
+#cmakedefine NO_OVERWRITE_CHECK
 
 #endif /* JPEG_CJPEG_DJPEG */
