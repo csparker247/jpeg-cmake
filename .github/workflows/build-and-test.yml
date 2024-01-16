@@ -22,13 +22,13 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Ubuntu
-      if: matrix.os ~= 'ubuntu'
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake
 
     - name: Setup macOS 11/12
-      if: matrix.os ~= 'macos'
+      if: startsWith(matrix.os, 'macos')
       run: |
         sudo xcode-select -s /Library/Developer/CommandLineTools/
         brew install cmake
