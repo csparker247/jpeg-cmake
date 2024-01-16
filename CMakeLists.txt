@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(jpeg-cmake VERSION 1.2.1)
+project(jpeg-cmake VERSION 1.3.0)
 
 # Use configure_file insted of file(COPY)
 # to ensure files are updated in src directory

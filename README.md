@@ -1,41 +1,33 @@
 # IJG's libjpeg (with CMake)
-Current Version: `libjpeg 9e (9.5.0)`
+Current Version: `libjpeg 9f (9.6.0)`
 
 ## Usage
 This project provides drop-in CMake support for the IJG's JPEG library.
 Simply run CMake as normal:
 
 ```Shell
-mkdir build/
-cd build/
-cmake ..
-make
+cmake -S . -B build/
+cmake --build build/
 ```
 
 Alternatively, the important CMake files can be copied to any `libjpeg`
 source directory:
 ```Shell
-cp resources/* ~/jpeg-9e/
-cd ~/jpeg-9e/
-mkdir build/
-cd build/
-cmake ..
-make
+cp resources/* ~/jpeg-9f/
+cmake -S ~/jpeg-9f/ -B ~/jpeg-9f/build/
+cmake --build ~/jpeg-9f/build/
 ```
 
 ## Updating libjpeg
 ```Shell
 # Delete the contents of the libjpeg subdirectory
-cd libjpeg/
-rm -rf *
+rm -rf libjpeg/*
 
 # Copy the source files for libjpeg into the libjpeg subdirectory
-cp -a ~/jpeg-9e/ .
+cp -a ~/jpeg-9f/ libjpeg/
 
 # Rerun the CMake build process
-cd ../build/
-cmake .
-make
+cmake --build build/
 ```
 
 ## Advanced Configuration
@@ -67,20 +59,20 @@ The default output format for djpeg can be specified with the `DEFAULT_FMT`
 flag. To compile correctly, the flag must be set to one of the enum options
 listed in `djpeg.c`:
 * FMT_BMP
-*	FMT_GIF
-*	FMT_GIF0
-*	FMT_OS2
-*	FMT_PPM
-*	FMT_RLE
-*	FMT_TARGA
-*	FMT_TIFF
+* FMT_GIF
+* FMT_GIF0
+* FMT_OS2
+* FMT_PPM
+* FMT_RLE
+* FMT_TARGA
+* FMT_TIFF
 
 ```Shell
 cmake -DDEFAULT_FMT=FMT_BMP ..
 ```
 
 #### Alternate UI
-jpeg-9e provides an alternate command line interface for cjpeg and djpeg. This
+jpeg-9e+ provides an alternate command line interface for cjpeg and djpeg. This
 interface can be enabled with the `BUILD_ALT_UI` flag:
 ```Shell
 cmake -DBUILD_ALT_UI=ON ..
