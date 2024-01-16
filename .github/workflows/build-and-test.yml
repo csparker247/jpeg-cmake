@@ -16,28 +16,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          os: [macos-10.15, macos-11, ubuntu-20.04]
+          os: [macos-11, macos-12, ubuntu-20.04, ubuntu-22.04]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os ~= 'ubuntu'
       run: |
         sudo apt-get update
         sudo apt-get install -y cmake
 
-    - name: Setup macOS 10.15
-      if: matrix.os == 'macos-10.15'
-      run: |
-        sudo xcode-select -s /Library/Developer/CommandLineTools/
-        sudo rm /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
-        sudo rm -rf /Library/Developer/CommandLineTools/SDKs/MacOSX11*.sdk
-        sudo ln -sf MacOSX10.15.sdk /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
-        brew install cmake
-
-    - name: Setup macOS 11
-      if: matrix.os == 'macos-11'
+    - name: Setup macOS 11/12
+      if: matrix.os ~= 'macos'
       run: |
         sudo xcode-select -s /Library/Developer/CommandLineTools/
         brew install cmake
