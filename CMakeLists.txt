@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(jpeg-cmake VERSION 1.3.0)
 
 # Use configure_file insted of file(COPY)
