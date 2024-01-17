@@ -27,6 +27,7 @@ jobs:
       run: |
         sudo xcode-select -s /Library/Developer/CommandLineTools/
         brew install cmake
+        rm -rf /Library/Frameworks/Mono.framework
 
     - name: Configure CMake
       shell: bash
@@ -54,5 +55,5 @@ jobs:
       run: |
         RESULT=$(cmake --find-package -DNAME=JPEG \
           -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=COMPILE \
-          -DCMAKE_PREFIX_PATH=${{runner.workspace}}/install)
+          -DCMAKE_PREFIX_PATH=${{runner.workspace}}/install/include)
         [[ "$RESULT" != "-I${{runner.workspace}}/install" ]] && { echo "${RESULT}" ; exit 1; }
