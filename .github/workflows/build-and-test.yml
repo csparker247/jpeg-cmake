@@ -55,4 +55,4 @@ jobs:
         RESULT=$(cmake --find-package -DNAME=JPEG \
           -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=COMPILE \
           -DCMAKE_PREFIX_PATH=${{runner.workspace}}/install)
-        [[ "$RESULT" != "-I${{runner.workspace}}/install" ]] && { exit 1; }
+        [[ "$RESULT" != "-I${{runner.workspace}}/install" ]] && { echo "${RESULT}" ; exit 1; }
