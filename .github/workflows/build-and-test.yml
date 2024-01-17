@@ -46,15 +46,13 @@ jobs:
       shell: bash
       run: ctest -V -C $BUILD_TYPE
 
-    - name: Install
-      shell: bash
-      run: cmake --install ${{runner.workspace}}/build --config $BUILD_TYPE
-
     - name: Test install
       shell: bash
       run: |
+        cmake --install ${{runner.workspace}}/build --config $BUILD_TYPE
         RESULT=$(cmake --find-package -DNAME=JPEG \
           -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=COMPILE \
           -DCMAKE_PREFIX_PATH=${{runner.workspace}}/install | awk '{$1=$1};1')
-        [[ "$RESULT" != "-I${{runner.workspace}}/install/include" ]] && { echo "Failed to find libjpeg at expected location: ${RESULT}" ; exit 1; }
+        [[ "$RESULT" != "-I${{runner.workspace}}/install/include" ]] && { echo "libjpeg not found or found at unexpected location: ${RESULT}" ; exit 1; }
         exit 0
+        
