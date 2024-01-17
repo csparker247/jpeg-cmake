@@ -57,3 +57,4 @@ jobs:
           -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=COMPILE \
           -DCMAKE_PREFIX_PATH=${{runner.workspace}}/install | awk '{$1=$1};1')
         [[ "$RESULT" != "-I${{runner.workspace}}/install/include" ]] && { echo "Failed to find libjpeg at expected location: ${RESULT}" ; exit 1; }
+        exit 0
