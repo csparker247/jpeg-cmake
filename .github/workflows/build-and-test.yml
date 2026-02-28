@@ -129,7 +129,10 @@ jobs:
 
       - name: Install libidn11 (required by old CMake binaries)
         if: ${{ startsWith( matrix.cmake-version, '3.5.' ) }}
-        run: sudo apt-get install -y libidn12
+        run: |
+          sudo apt-get install -y libidn12
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libidn.so.12 /usr/lib/x86_64-linux-gnu/libidn.so.11
+          export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
 
       - name: Show CMake version
         run: cmake --version
