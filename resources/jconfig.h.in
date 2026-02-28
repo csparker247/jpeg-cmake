@@ -33,11 +33,17 @@
  * NOTE: be sure to define void such that "void *" represents the most general
  * pointer type, e.g., that returned by malloc().
  */
-/* #define void char */
+#cmakedefine VOID_IS_CHAR
+#ifdef VOID_IS_CHAR
+#define void char
+#endif
 
 /* Define "const" as empty if your compiler doesn't know the "const" keyword.
  */
-/* #define const */
+#cmakedefine CONST_IS_EMPTY
+#ifdef CONST_IS_EMPTY
+#define const
+#endif
 
 /* Define this if an ordinary "char" type is unsigned.
  * If you're not sure, leaving it undefined will work at some cost in speed.

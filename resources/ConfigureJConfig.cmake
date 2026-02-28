@@ -20,10 +20,10 @@ check_type_size("unsigned short" UNSIGNED_SHORT LANGUAGE C)
 # Define "void" as "char" if your compiler doesn't know about type void.
 # NOTE: be sure to define void such that "void *" represents the most general
 # pointer type, e.g., that returned by malloc().
-# NOT IMPLEMENTED: Modify in jconfig.h.in #
+set(VOID_IS_CHAR false CACHE BOOL "Define 'void' as 'char' for compilers that don't support the void keyword")
 
 # Define "const" as empty if your compiler doesn't know the "const" keyword.
-# NOT IMPLEMENTED: Modify in jconfig.h.in #
+set(CONST_IS_EMPTY false CACHE BOOL "Define 'const' as empty for compilers that don't support the const keyword")
 
 # Define this if an ordinary "char" type is unsigned.
 # If you're not sure, leaving it undefined will work at some cost in speed.
@@ -59,7 +59,7 @@ set(NEED_SHORT_EXTERNAL_NAMES false CACHE BOOL "Global names must be unique in l
 set(INCOMPLETE_TYPES_BROKEN false CACHE BOOL "Disable pointers to unspecified structures")
 
 # Define "boolean" as unsigned char, not enum, on Windows systems.
-# NOT IMPLEMENTED: Modify in jconfig.h.in #
+# Handled in jconfig.h.in via #ifdef _WIN32.
 
 # The following options affect code selection within the JPEG library,
 # but they don't need to be visible to applications using the library.
@@ -122,6 +122,8 @@ mark_as_advanced(FORCE
   HAVE_PROTOTYPES
   HAVE_UNSIGNED_CHAR
   HAVE_UNSIGNED_SHORT
+  VOID_IS_CHAR
+  CONST_IS_EMPTY
   CHAR_IS_UNSIGNED
   HAVE_STDDEF_H
   HAVE_STDLIB_H
