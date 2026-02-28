@@ -128,16 +128,30 @@ jobs:
         with:
           cmakeVersion: ${{ matrix.cmake-version }}
 
+      - name: Install libidn11 (required by old CMake binaries)
+        run: sudo apt-get install -y libidn11
+
       - name: Show CMake version
         run: cmake --version
 
       - name: Configure CMake
         shell: bash
         run: |
-          cmake -S "$GITHUB_WORKSPACE" \
-                -B "${{ runner.workspace }}/build" \
-                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
-                -DCMAKE_INSTALL_PREFIX="${{ runner.workspace }}/install"
+          CMAKE_VER=$(cmake --version | awk 'NR==1{print $3}')
+          MAJOR=$(echo "$CMAKE_VER" | cut -d. -f1)
+          MINOR=$(echo "$CMAKE_VER" | cut -d. -f2)
+          if [ "$MAJOR" -gt 3 ] || { [ "$MAJOR" -eq 3 ] && [ "$MINOR" -ge 13 ]; }; then
+            cmake -S "$GITHUB_WORKSPACE" \
+                  -B "${{ runner.workspace }}/build" \
+                  -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+                  -DCMAKE_INSTALL_PREFIX="${{ runner.workspace }}/install"
+          else
+            mkdir -p "${{ runner.workspace }}/build"
+            cd "${{ runner.workspace }}/build"
+            cmake "$GITHUB_WORKSPACE" \
+                  -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+                  -DCMAKE_INSTALL_PREFIX="${{ runner.workspace }}/install"
+          fi
 
       - name: Build
         shell: bash
@@ -185,6 +199,16 @@ jobs:
           message(STATUS "JPEG_INCLUDE_DIRS: ${JPEG_INCLUDE_DIRS}")
           message(STATUS "JPEG_LIBRARIES: ${JPEG_LIBRARIES}")
           ENDCMAKE
-          cmake -S "${TESTDIR}" \
-                -B "${TESTDIR}/build" \
-                -DCMAKE_PREFIX_PATH="${{ runner.workspace }}/install"
+          CMAKE_VER=$(cmake --version | awk 'NR==1{print $3}')
+          MAJOR=$(echo "$CMAKE_VER" | cut -d. -f1)
+          MINOR=$(echo "$CMAKE_VER" | cut -d. -f2)
+          if [ "$MAJOR" -gt 3 ] || { [ "$MAJOR" -eq 3 ] && [ "$MINOR" -ge 13 ]; }; then
+            cmake -S "${TESTDIR}" \
+                  -B "${TESTDIR}/build" \
+                  -DCMAKE_PREFIX_PATH="${{ runner.workspace }}/install"
+          else
+            mkdir -p "${TESTDIR}/build"
+            cd "${TESTDIR}/build"
+            cmake "${TESTDIR}" \
+                  -DCMAKE_PREFIX_PATH="${{ runner.workspace }}/install"
+          fi
