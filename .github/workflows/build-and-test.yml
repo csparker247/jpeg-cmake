@@ -129,7 +129,8 @@ jobs:
           cmakeVersion: ${{ matrix.cmake-version }}
 
       - name: Install libidn11 (required by old CMake binaries)
-        run: sudo apt-get install -y libidn11
+        if: $startsWith( matrix.cmake-version, '3.5.' )
+        run: sudo apt-get install -y libidn11-dev
 
       - name: Show CMake version
         run: cmake --version
