@@ -3,7 +3,7 @@
 # Adapted from LuaDist's CMakeLists
 # https://github.com/LuaDist/libjpeg/blob/master/CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5...4.2)
 
 ### Setup the project ###
 file(READ "configure.ac" ac)
